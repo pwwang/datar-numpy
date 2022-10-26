@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "datar-numpy"
+version = "0.0.0"
+description = "The numpy backend for datar"
+authors = ["pwwang <pwwang@pwwang.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "datar_numpy"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1.22"
+datar = "^0.10.0"
+
+
+[tool.poetry.plugins.datar]
+numpy = "datar_numpy:plugin"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

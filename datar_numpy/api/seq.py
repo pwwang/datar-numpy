@@ -22,19 +22,6 @@ from ..utils import is_null, make_array, is_scalar
 from .asis import _is_type
 
 
-def _get_rankdata_func_from_scipy():
-    """Import rankdata function from scipy on the fly"""
-    try:
-        from scipy import stats
-    except ImportError as imperr:  # pragma: no cover
-        raise ImportError(
-            "`rank` requires `scipy` package.\n"
-            "Try: pip install -U scipy"
-        ) from imperr
-
-    return stats.rankdata
-
-
 @rep.register(object)
 def _rep(
     x,
@@ -88,14 +75,16 @@ def _rep(
 def _c(x, *args):
     args = (x, *args)
     return np.concatenate(
-        make_array(xi).flatten()
-        for xi in args
+        [
+            make_array(xi).flatten()
+            for xi in args
+        ]
     )
 
 
 @length.register(object)
 def _length(x):
-    return make_array(x).size
+    return make_array(x).shape[0]
 
 
 @lengths.register(object)
@@ -107,38 +96,17 @@ def _lengths(x) -> np.ndarray[int]:
     )
 
 
-@make_names.register(object)
-def _make_names(x, unique: bool = False):
-    try:
-        from slugify import slugify
-    except ImportError as imerr:  # pragma: no cover
-        raise ValueError(
-            "`make_names()` requires `python-slugify` package.\n"
-            "Try: pip install -U slugify"
-        ) from imerr
-
-    if is_scalar(names):
-        names = [names]
-
-    names = [slugify(name, separator="_", lowercase=False) for name in names]
-    names = [f"_{name}" if name[0].isdigit() else name for name in names]
-    if unique:
-        return repair_names(names, "unique")
-    return names
-
-
 @order.register(object)
 def _order(x, decreasing: bool = False, na_last: bool = True):
-    na = -np.inf if not na_last or decreasing else np.inf
+    and_ = not na_last and decreasing
+    or_ = not na_last or decreasing
+    na = -np.inf if or_ and not and_ else np.inf
 
     x = make_array(x)
-    mask = is_null(x)
-    x = np.where(mask, na, x)
+    x = np.where(is_null(x), na, x)
     out = np.argsort(x)
 
-    if decreasing:
-        out = out[::-1]
-    return out
+    return out[::-1] if decreasing else out
 
 
 @sort.register(object)
@@ -158,8 +126,16 @@ def _sort(x, decreasing: bool = False, na_last: bool = True):
 def _rank(x, na_last: bool = True, ties_method: str = "average"):
     if not na_last:
         raise NotImplementedError("na_last=False is not supported yet")
-    rankdata = _get_rankdata_func_from_scipy()
-    return rankdata(x, method=ties_method)
+
+    try:
+        from scipy import stats
+    except ImportError as imperr:  # pragma: no cover
+        raise ImportError(
+            "`rank` requires `scipy` package.\n"
+            "Try: pip install -U scipy"
+        ) from imperr
+
+    return stats.rankdata(x, method=ties_method)
 
 
 @rev.register(object)
@@ -183,7 +159,7 @@ def _sample(
 
 @seq.register(object)
 def _seq(
-    from_=None,
+    from_,
     to=None,
     by=None,
     length_out=None,
@@ -197,11 +173,13 @@ def _seq(
 
     if length_out is not None and from_ is None and to is None:
         return seq_len(length_out, __ast_fallback="normal")
-
+    print(from_)
     if from_ is None:
+        print(999)
         from_ = 1
     elif to is None:
         from_, to = 1, from_
+    print(from_, to)
 
     if length_out is not None:
         by = (float(to) - float(from_)) / float(length_out)
@@ -226,7 +204,7 @@ def _seq_len(length_out):
 
 
 @match.register(object)
-def _match(x, table, nomatch=None):
+def _match(x, table, nomatch=-1):
     sorter = np.argsort(table)
     searched = np.searchsorted(table, x, sorter=sorter).ravel()
     out = sorter.take(searched, mode="clip")

@@ -6,10 +6,8 @@ from typing import TYPE_CHECKING, Any
 
 import numpy as np
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from numpy._typing import DTypeLike
-
-NO_DEFAULT = object()
 
 
 def is_scalar(x: Any) -> bool:
@@ -27,7 +25,7 @@ def is_scalar(x: Any) -> bool:
         # np.ndim({'a'}) == 0
         return False
 
-    if isinstance(x, type) and issubclass(x, np.generic):
+    if isinstance(x, type) and issubclass(x, (np.generic, np.ndarray)):
         # np.ndim(np.generic)
         #   <attribute 'ndim' of 'numpy.generic' objects>
         return True

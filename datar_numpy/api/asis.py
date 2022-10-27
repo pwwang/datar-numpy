@@ -30,7 +30,7 @@ from datar.apis.base import (
     as_numeric,
 )
 
-from ..utils import NO_DEFAULT, is_scalar, is_null as _is_null_, make_array
+from ..utils import is_scalar, is_null as _is_null_, make_array
 from .constants import NULL
 
 
@@ -47,7 +47,7 @@ def _is_type(x, pytype, npdtype):
 
 def _as_type(x, pytype, npdtype):
     if is_scalar(x):
-        if isinstance(x, np.generic):
+        if isinstance(x, np.ndarray):
             x = x.item()
         return pytype(x)
 
@@ -96,7 +96,7 @@ def _is_finite(x: Any) -> bool:
 
 @is_false.register(object)
 def _is_false(x: Any) -> bool:
-    return x is False
+    return x is False or np.array_equal(x, False)
 
 
 @is_infinite.register(object)
@@ -116,7 +116,7 @@ def _is_na(x: Any) -> bool | np.ndarray[bool]:
 
 @is_null.register(object)
 def _is_null(x: Any) -> bool:
-    return x is NULL
+    return x is NULL or np.array_equal(x, NULL)
 
 
 @is_numeric.register(object)
@@ -126,7 +126,7 @@ def _is_numeric(x: Any) -> bool:
 
 @is_true.register(object)
 def _is_true(x: Any) -> bool:
-    return x is True
+    return x is True or np.array_equal(x, True)
 
 
 @as_character.register(object)
@@ -181,4 +181,4 @@ def _as_numeric(x: Any) -> Number | np.ndarray[Number]:
     except (TypeError, ValueError):
         pass
 
-    raise TypeError(f"Cannot convert {x} to numeric")
+    raise ValueError(f"Cannot convert {x} to numeric")

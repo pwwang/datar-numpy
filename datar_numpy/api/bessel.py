@@ -21,60 +21,51 @@ def _get_special_func_from_scipy(name):
 
 @bessel_i.register(object)
 def _bessel_i(x, nu, expon_scaled: bool = False):
-    if nu == 0 and expon_scaled:
-        fn = _get_special_func_from_scipy("i0e")
-    elif nu == 1 and expon_scaled:
-        fn = _get_special_func_from_scipy("i1e")
-    elif nu == 0 and not expon_scaled:
-        fn = _get_special_func_from_scipy("i0")
-    elif nu == 1 and not expon_scaled:
-        fn = _get_special_func_from_scipy("i1")
-    elif expon_scaled:
-        fn = _get_special_func_from_scipy("ive")
-    else:
-        fn = _get_special_func_from_scipy("iv")
+    if nu not in (0, 1):
+        fn = "ive" if expon_scaled else "iv"
+        return _get_special_func_from_scipy(fn)(nu, x)
 
-    return fn(nu, x)
+    if nu == 0 and expon_scaled:
+        fn = "i0e"
+    elif nu == 1 and expon_scaled:
+        fn = "i1e"
+    elif nu == 0 and not expon_scaled:
+        fn = "i0"
+    elif nu == 1 and not expon_scaled:
+        fn = "i1"
+    return _get_special_func_from_scipy(fn)(x)
 
 
 @bessel_j.register(object)
 def _bessel_j(x, nu):
-    if nu == 0:
-        fn = _get_special_func_from_scipy("j0")
-    elif nu == 1:
-        fn = _get_special_func_from_scipy("j1")
-    else:
-        fn = _get_special_func_from_scipy("jv")
+    if nu not in (0, 1):
+        return _get_special_func_from_scipy("jv")(nu, x)
 
-    return fn(nu, x)
+    fn = "j0" if nu == 0 else "j1"
+    return _get_special_func_from_scipy(fn)(x)
 
 
 @bessel_k.register(object)
 def _bessel_k(x, nu, expon_scaled: bool = False):
-    if nu == 0 and expon_scaled:
-        fn = _get_special_func_from_scipy("k0e")
-    elif nu == 1 and expon_scaled:
-        fn = _get_special_func_from_scipy("k1e")
-    elif nu == 0 and not expon_scaled:
-        fn = _get_special_func_from_scipy("k0")
-    elif nu == 1 and not expon_scaled:
-        fn = _get_special_func_from_scipy("k1")
-    elif expon_scaled:
-        fn = _get_special_func_from_scipy("kve")
-    else:
-        fn = _get_special_func_from_scipy("kv")
+    if nu not in (0, 1):
+        fn = "kve" if expon_scaled else "kv"
+        return _get_special_func_from_scipy(fn)(nu, x)
 
-    return fn(nu, x)
+    if nu == 0 and expon_scaled:
+        fn = "k0e"
+    elif nu == 1 and expon_scaled:
+        fn = "k1e"
+    elif nu == 0 and not expon_scaled:
+        fn = "k0"
+    elif nu == 1 and not expon_scaled:
+        fn = "k1"
+    return _get_special_func_from_scipy(fn)(x)
 
 
 @bessel_y.register(object)
 def _bessel_y(x, nu):
-    if nu == 0:
-        fn = _get_special_func_from_scipy("y0")
-    elif nu == 1:
-        fn = _get_special_func_from_scipy("y1")
-    else:
-        fn = _get_special_func_from_scipy("yv")
+    if nu not in (0, 1):
+        return _get_special_func_from_scipy("yv")(nu, x)
 
-    return fn(nu, x)
-
+    fn = "y0" if nu == 0 else "y1"
+    return _get_special_func_from_scipy(fn)(x)

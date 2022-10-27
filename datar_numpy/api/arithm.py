@@ -106,7 +106,7 @@ def _scale(x, center=True, scale_=True):
             scale_ = np.sqrt(np.nansum(x**2) / (len(x) - 1))
 
     elif scale_ is not False:
-        scale_ = make_array(scale)
+        scale_ = make_array(scale_)
 
     if scale_ is not False:
         x = x / scale_
@@ -151,7 +151,10 @@ def _sign(x):
 
 @signif.register(object)
 def _signif(x, digits: int = 6):
-    return np.around(x, digits - int(np.floor(np.log10(np.abs(x)))) - 1)
+    digits = digits - np.ceil(np.log10(np.abs(x)))
+    digits = np.broadcast_arrays(0, digits.astype(int))
+    digits = np.nanmax(digits, axis=0)
+    return np.vectorize(np.round)(x, digits)
 
 
 @trunc.register(object)
@@ -201,8 +204,8 @@ def _weighted_mean(x, w=None, na_rm: bool = False):
         x = make_array(x)
         w = make_array(w)
         mask = ~is_null(x)
-        x = x[~mask]
-        w = w[~mask]
+        x = x[mask]
+        w = w[mask]
         if w.size == 0:
             return np.nan
 
@@ -210,7 +213,7 @@ def _weighted_mean(x, w=None, na_rm: bool = False):
 
 
 @quantile.register(object)
-def quantile(
+def _quantile(
     x,
     probs=(0.0, 0.25, 0.5, 0.75, 1.0),
     na_rm: bool = False,

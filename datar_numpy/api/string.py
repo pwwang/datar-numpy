@@ -120,9 +120,14 @@ def _nchar_(x, retn, allow_na, keep_na, na_len):
     if retn == "chars":
         return len(x)
 
+    if isinstance(x, (np.bytes_, np.str_)):
+        x = x.item()
+    if isinstance(x, bytes):
+        return len(x)
+
     try:
         x = x.encode("utf-8")
-    except UnicodeEncodeError:
+    except UnicodeEncodeError:  # pragma: no cover
         if allow_na:
             return np.nan
         raise
@@ -224,7 +229,7 @@ def _paste0(x, *args, collapse=None):
 
 
 @sprintf.register(object)
-def _sprintf(fmt, *args, **kwargs):
+def _sprintf(fmt, *args):
     return np.vectorize(lambda fmt, *args: fmt % args)(
         *np.broadcast_arrays(fmt, *args)
     )
@@ -284,8 +289,6 @@ def _tolower(x):
 def _chartr(old, new, x):
     old = _warn_more_pat_or_rep(old, "chartr", "old")
     new = _warn_more_pat_or_rep(new, "chartr", "new")
-    if len(old) > len(new):
-        raise ValueError("'old' is longer than 'new'")
 
     new = new[: len(old)]
     for oldc, newc in zip(old, new):
@@ -313,13 +316,14 @@ def _nchar(
 
 @nzchar.register(object)
 def _nzchar(x, keep_na: bool = False):
-    out = _as_type(x, bool, np.bool_)
+    x = make_array(x)
+    mask = is_null(x)
+    out = np.where(mask, "", x).astype(str)
+    out = np.char.str_len(out)
+    out = out.astype(bool)
+
     if not keep_na:
         return out
-
-    mask = is_null(x)
-    if is_scalar(mask):
-        return out if not mask else x
 
     if not mask.any():
         return out

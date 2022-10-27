@@ -12,6 +12,7 @@ def base_api():
         complex,
         constants,
         cum,
+        misc,
         random,
         seq,
         sets,

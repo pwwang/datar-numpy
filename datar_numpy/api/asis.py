@@ -1,8 +1,7 @@
 from __future__ import annotations
 
-from functools import singledispatch
 from numbers import Number
-from typing import Any, Callable, Type
+from typing import Any
 
 import numpy as np
 from datar.apis.base import (

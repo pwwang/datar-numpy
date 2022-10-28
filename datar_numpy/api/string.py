@@ -24,7 +24,6 @@ from datar.apis.base import (
     nzchar,
 )
 from ..utils import is_null, is_scalar, make_array
-from .asis import _as_type
 
 
 def _warn_more_pat_or_rep(pattern, fun, arg="pattern"):

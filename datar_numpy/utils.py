@@ -80,3 +80,12 @@ def make_array(x: Any, dtype: DTypeLike = None) -> np.ndarray:
     if na_mask.any() and out.dtype.kind == "U":
         out = np.array(x, dtype=object)
     return out
+
+
+def flatten_slice(x: slice) -> np.ndarray[int]:
+    """Flatten a slice into an array of integers"""
+    start = x.start or 0
+    stop = x.stop or 0
+    if x.step == 1:
+        stop += 1
+    return np.arange(start, stop, x.step)

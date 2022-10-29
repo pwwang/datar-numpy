@@ -4,6 +4,8 @@ from .utils import flatten_slice, make_array
 
 plugin = Simplug("datar")
 
+priority = -1
+
 
 @plugin.impl
 def base_api():

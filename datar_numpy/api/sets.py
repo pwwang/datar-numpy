@@ -84,7 +84,8 @@ def _intersect(x, y):
 
 @setdiff.register(object)
 def _setdiff(x, y):
-    out = np.setdiff1d(x, y)
+    x = make_array(x)
+    out = x[~np.in1d(x, y)]
     return unique(out, __ast_fallback="normal")
 
 

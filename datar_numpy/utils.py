@@ -49,10 +49,11 @@ def is_null(x: Any) -> bool | np.ndarray[bool]:
     try:
         return np.isnan(x)
     except TypeError:
+
         isnull_atomic = (
             lambda x: x is None or (isinstance(x, Number) and np.isnan(x))
         )
-        return np.vectorize(isnull_atomic)(x)
+        return np.vectorize(isnull_atomic, [bool])(x)
 
 
 def make_array(x: Any, dtype: DTypeLike = None) -> np.ndarray:

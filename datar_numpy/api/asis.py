@@ -84,8 +84,8 @@ def _is_integer(x: Any) -> bool:
 
 
 @is_element.register(object)
-def _is_element(el: Any, pool: Any) -> bool:
-    return np.isin(el, pool)
+def _is_element(x: Any, y: Any) -> bool:
+    return np.isin(x, y)
 
 
 @is_finite.register(object)

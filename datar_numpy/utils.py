@@ -64,9 +64,6 @@ def make_array(x: Any, dtype: DTypeLike = None) -> np.ndarray:
     if isinstance(x, np.ndarray):
         return x if dtype is None else x.astype(dtype)
 
-    if isinstance(x, dict):
-        x = list(x)
-
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", np.VisibleDeprecationWarning)
         out = np.array(x, dtype=dtype)

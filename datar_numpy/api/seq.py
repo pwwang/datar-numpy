@@ -5,7 +5,7 @@ import numpy as np
 from datar.core.utils import logger
 from datar.apis.base import (
     rep,
-    c,
+    c_,
     length,
     lengths,
     order,
@@ -22,7 +22,7 @@ from ..utils import is_null, make_array, is_scalar
 from .asis import _is_type
 
 
-@rep.register(object)
+@rep.register(object, backend="numpy")
 def _rep(
     x,
     times=1,
@@ -71,9 +71,8 @@ def _rep(
     return x[:length]
 
 
-@c.register(object)
-def _c(x, *args):
-    args = (x, *args)
+@c_.register(object, backend="numpy")
+def _c(*args):
     return np.concatenate(
         [
             make_array(xi).flatten()
@@ -82,12 +81,12 @@ def _c(x, *args):
     )
 
 
-@length.register(object)
+@length.register(object, backend="numpy")
 def _length(x):
     return make_array(x).shape[0]
 
 
-@lengths.register(object)
+@lengths.register(object, backend="numpy")
 def _lengths(x) -> np.ndarray[int]:
     return (
         np.array([1], dtype=int)
@@ -96,7 +95,7 @@ def _lengths(x) -> np.ndarray[int]:
     )
 
 
-@order.register(object)
+@order.register(object, backend="numpy")
 def _order(x, decreasing: bool = False, na_last: bool = True):
     and_ = not na_last and decreasing
     or_ = not na_last or decreasing
@@ -109,7 +108,7 @@ def _order(x, decreasing: bool = False, na_last: bool = True):
     return out[::-1] if decreasing else out
 
 
-@sort.register(object)
+@sort.register(object, backend="numpy")
 def _sort(x, decreasing: bool = False, na_last: bool = True):
     x = make_array(x)
     idx = order(
@@ -117,12 +116,13 @@ def _sort(x, decreasing: bool = False, na_last: bool = True):
         decreasing=decreasing,
         na_last=na_last,
         __ast_fallback="normal",
+        __backend="numpy",
     )
 
     return x[idx]
 
 
-@rank.register(object)
+@rank.register(object, backend="numpy")
 def _rank(x, na_last: bool = True, ties_method: str = "average"):
     if not na_last:
         raise NotImplementedError("na_last=False is not supported yet")
@@ -138,13 +138,13 @@ def _rank(x, na_last: bool = True, ties_method: str = "average"):
     return stats.rankdata(x, method=ties_method)
 
 
-@rev.register(object)
+@rev.register(object, backend="numpy")
 def _rev(x):
     x = make_array(x)
     return x[::-1]
 
 
-@sample.register(object)
+@sample.register(object, backend="numpy")
 def _sample(
     x,
     size: int = None,
@@ -157,7 +157,7 @@ def _sample(
     return np.random.choice(x, size, replace=replace, p=prob)
 
 
-@seq.register(object)
+@seq.register(object, backend="numpy")
 def _seq(
     from_,
     to=None,
@@ -166,13 +166,13 @@ def _seq(
     along_with=None,
 ):
     if along_with is not None:
-        return seq_along(along_with, __ast_fallback="normal")
+        return seq_along(along_with, __backend="numpy", __ast_fallback="normal")
 
     if not is_scalar(from_):
-        return seq_along(from_, __ast_fallback="normal")
+        return seq_along(from_, __backend="numpy", __ast_fallback="normal")
 
     if length_out is not None and from_ is None and to is None:
-        return seq_len(length_out, __ast_fallback="normal")
+        return seq_len(length_out, __backend="numpy", __ast_fallback="normal")
     print(from_)
     if from_ is None:
         print(999)
@@ -192,18 +192,18 @@ def _seq(
     return np.array([from_ + n * by for n in range(int(length_out))])
 
 
-@seq_along.register(object)
+@seq_along.register(object, backend="numpy")
 def _seq_along(x):
     x = make_array(x)
     return np.arange(x.size) + 1
 
 
-@seq_len.register(object)
+@seq_len.register(object, backend="numpy")
 def _seq_len(length_out):
     return np.arange(int(length_out)) + 1
 
 
-@match.register(object)
+@match.register(object, backend="numpy")
 def _match(x, table, nomatch=-1):
     sorter = np.argsort(table)
     searched = np.searchsorted(table, x, sorter=sorter).ravel()

@@ -19,7 +19,7 @@ def _get_special_func_from_scipy(name):
     return getattr(special, name)
 
 
-@bessel_i.register(object)
+@bessel_i.register(object, backend="numpy")
 def _bessel_i(x, nu, expon_scaled: bool = False):
     if nu not in (0, 1):
         fn = "ive" if expon_scaled else "iv"
@@ -36,7 +36,7 @@ def _bessel_i(x, nu, expon_scaled: bool = False):
     return _get_special_func_from_scipy(fn)(x)
 
 
-@bessel_j.register(object)
+@bessel_j.register(object, backend="numpy")
 def _bessel_j(x, nu):
     if nu not in (0, 1):
         return _get_special_func_from_scipy("jv")(nu, x)
@@ -45,7 +45,7 @@ def _bessel_j(x, nu):
     return _get_special_func_from_scipy(fn)(x)
 
 
-@bessel_k.register(object)
+@bessel_k.register(object, backend="numpy")
 def _bessel_k(x, nu, expon_scaled: bool = False):
     if nu not in (0, 1):
         fn = "kve" if expon_scaled else "kv"
@@ -62,7 +62,7 @@ def _bessel_k(x, nu, expon_scaled: bool = False):
     return _get_special_func_from_scipy(fn)(x)
 
 
-@bessel_y.register(object)
+@bessel_y.register(object, backend="numpy")
 def _bessel_y(x, nu):
     if nu not in (0, 1):
         return _get_special_func_from_scipy("yv")(nu, x)

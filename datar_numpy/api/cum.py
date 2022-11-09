@@ -8,21 +8,21 @@ from datar.apis.base import (
 )
 
 
-@cummax.register(object)
+@cummax.register(object, backend="numpy")
 def _cummax(x):
     return np.maximum.accumulate(x)
 
 
-@cummin.register(object)
+@cummin.register(object, backend="numpy")
 def _cummin(x):
     return np.minimum.accumulate(x)
 
 
-@cumprod.register(object)
+@cumprod.register(object, backend="numpy")
 def _cumprod(x):
     return np.cumprod(x)
 
 
-@cumsum.register(object)
+@cumsum.register(object, backend="numpy")
 def _cumsum(x):
     return np.cumsum(x)

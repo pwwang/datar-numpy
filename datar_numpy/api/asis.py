@@ -58,112 +58,112 @@ def _as_type(x, pytype, npdtype):
     return x.astype(npdtype)
 
 
-@is_atomic.register(object)
+@is_atomic.register(object, backend="numpy")
 def _is_atomic(x: Any) -> bool:
     return is_scalar(x)
 
 
-@is_character.register(object)
+@is_character.register(object, backend="numpy")
 def _is_character(x: Any) -> bool:
     return _is_type(x, str, np.str_)
 
 
-@is_complex.register(object)
+@is_complex.register(object, backend="numpy")
 def _is_complex(x: Any) -> bool:
     return _is_type(x, complex, np.complex_)
 
 
-@is_double.register(object)
+@is_double.register(object, backend="numpy")
 def _is_double(x: Any) -> bool:
     return _is_type(x, float, np.float_)
 
 
-@is_integer.register(object)
+@is_integer.register(object, backend="numpy")
 def _is_integer(x: Any) -> bool:
     return _is_type(x, int, np.integer)
 
 
-@is_element.register(object)
+@is_element.register(object, backend="numpy")
 def _is_element(x: Any, y: Any) -> bool:
     return np.isin(x, y)
 
 
-@is_finite.register(object)
+@is_finite.register(object, backend="numpy")
 def _is_finite(x: Any) -> bool:
     return np.isfinite(x)
 
 
-@is_false.register(object)
+@is_false.register(object, backend="numpy")
 def _is_false(x: Any) -> bool:
     return x is False or np.array_equal(x, False)
 
 
-@is_infinite.register(object)
+@is_infinite.register(object, backend="numpy")
 def _is_infinite(x: Any) -> bool:
     return np.isinf(x)
 
 
-@is_logical.register(object)
+@is_logical.register(object, backend="numpy")
 def _is_logical(x: Any) -> bool:
     return _is_type(x, bool, np.bool_)
 
 
-@is_na.register(object)
+@is_na.register(object, backend="numpy")
 def _is_na(x: Any) -> bool | np.ndarray[bool]:
     return _is_null_(x)
 
 
-@is_null.register(object)
+@is_null.register(object, backend="numpy")
 def _is_null(x: Any) -> bool:
     return x is NULL or np.array_equal(x, NULL)
 
 
-@is_numeric.register(object)
+@is_numeric.register(object, backend="numpy")
 def _is_numeric(x: Any) -> bool:
     return _is_type(x, Number, np.number)
 
 
-@is_true.register(object)
+@is_true.register(object, backend="numpy")
 def _is_true(x: Any) -> bool:
     return x is True or np.array_equal(x, True)
 
 
-@as_character.register(object)
+@as_character.register(object, backend="numpy")
 def _as_character(x: Any) -> str | np.ndarray[str]:
     return _as_type(x, str, np.str_)
 
 
-@as_complex.register(object)
+@as_complex.register(object, backend="numpy")
 def _as_complex(x: Any) -> complex | np.ndarray[complex]:
     return _as_type(x, complex, np.complex_)
 
 
-@as_date.register(object)
+@as_date.register(object, backend="numpy")
 def _as_date(x: Any) -> np.datetime64 | np.ndarray[np.datetime64]:
     return _as_type(x, np.datetime64, np.datetime64)
 
 
-@as_double.register(object)
+@as_double.register(object, backend="numpy")
 def _as_double(x: Any) -> float | np.ndarray[float]:
     return _as_type(x, float, np.float_)
 
 
-@as_integer.register(object)
+@as_integer.register(object, backend="numpy")
 def _as_integer(x: Any) -> int | np.ndarray[int]:
     return _as_type(x, int, np.int_)
 
 
-@as_logical.register(object)
+@as_logical.register(object, backend="numpy")
 def _as_logical(x: Any) -> bool | np.ndarray[bool]:
     return _as_type(x, bool, np.bool_)
 
 
-@as_null.register(object)
+@as_null.register(object, backend="numpy")
 def _as_null(x: Any) -> None:
     return NULL
 
 
-@as_numeric.register(object)
+@as_numeric.register(object, backend="numpy")
 def _as_numeric(x: Any) -> Number | np.ndarray[Number]:
     try:
         return _as_type(x, int, np.int_)

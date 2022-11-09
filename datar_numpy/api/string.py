@@ -140,7 +140,7 @@ _match = np.vectorize(_match, excluded={"pattern"})
 _sub_ = np.vectorize(_sub_, excluded={"pattern", "replacement"})
 
 
-@grep.register(object)
+@grep.register(object, backend="numpy")
 def _grep(
     pattern,
     x,
@@ -161,7 +161,7 @@ def _grep(
     return x[matched] if value else np.flatnonzero(matched)
 
 
-@grepl.register(object)
+@grepl.register(object, backend="numpy")
 def _grepl(
     pattern,
     x,
@@ -179,7 +179,7 @@ def _grepl(
     )
 
 
-@sub.register(object)
+@sub.register(object, backend="numpy")
 def _sub(
     pattern,
     replacement,
@@ -190,7 +190,7 @@ def _sub(
     return _sub_(pattern, replacement, x, ignore_case, fixed, 1, "sub")
 
 
-@gsub.register(object)
+@gsub.register(object, backend="numpy")
 def _gsub(
     pattern,
     replacement,
@@ -201,7 +201,7 @@ def _gsub(
     return _sub_(pattern, replacement, x, ignore_case, fixed, 0, "gsub")
 
 
-@strsplit.register(object)
+@strsplit.register(object, backend="numpy")
 def _strsplit(x, split, fixed=False):
     def split_str(string, sep):
         if fixed:
@@ -215,55 +215,61 @@ def _strsplit(x, split, fixed=False):
     return np.vectorize(split_str, [object])(x, split)
 
 
-@paste.register(object)
-def _paste(x, *args, sep=" ", collapse=None):
-    args = (arg for arg in (x, *args) if is_scalar(arg) or len(arg) > 0)
+@paste.register(object, backend="numpy")
+def _paste(*args, sep=" ", collapse=None):
+    args = (arg for arg in args if is_scalar(arg) or len(arg) > 0)
     pasted = _paste_(np.array(np.broadcast_arrays(*args)).T, sep=sep)
     return pasted if collapse is None else collapse.join(pasted)
 
 
-@paste0.register(object)
-def _paste0(x, *args, collapse=None):
-    return paste(x, *args, sep="", collapse=collapse, __ast_fallback="normal")
+@paste0.register(object, backend="numpy")
+def _paste0(*args, collapse=None):
+    return paste(
+        *args,
+        sep="",
+        collapse=collapse,
+        __backend="numpy",
+        __ast_fallback="normal",
+    )
 
 
-@sprintf.register(object)
+@sprintf.register(object, backend="numpy")
 def _sprintf(fmt, *args):
     return np.vectorize(lambda fmt, *args: fmt % args)(
         *np.broadcast_arrays(fmt, *args)
     )
 
 
-@substr.register(object)
+@substr.register(object, backend="numpy")
 def _substr(x, start, stop):
     return np.vectorize(lambda x, start, stop: x[start:stop])(
         *np.broadcast_arrays(x, start, stop)
     )
 
 
-@substring.register(object)
+@substring.register(object, backend="numpy")
 def _substring(x, first, last=None):
     return np.vectorize(lambda x, first, last: x[first:last])(
         *np.broadcast_arrays(x, first, last)
     )
 
 
-@startswith.register(object)
+@startswith.register(object, backend="numpy")
 def _startswith(x, prefix):
     return np.char.startswith(x, prefix)
 
 
-@endswith.register(object)
+@endswith.register(object, backend="numpy")
 def _endswith(x, suffix):
     return np.char.endswith(x, suffix)
 
 
-@strtoi.register(object)
+@strtoi.register(object, backend="numpy")
 def _strtoi(x, base=0):
     return np.vectorize(int, excluded={"base"})(x, base=base)
 
 
-@trimws.register(object)
+@trimws.register(object, backend="numpy")
 def _trimws(x, which="both", whitespace=r" \t"):
     if which == "both":
         return np.char.strip(x, whitespace)
@@ -274,17 +280,17 @@ def _trimws(x, which="both", whitespace=r" \t"):
     raise ValueError("`which` must be one of 'both', 'left', 'right'")
 
 
-@toupper.register(object)
+@toupper.register(object, backend="numpy")
 def _toupper(x):
     return np.char.upper(x)
 
 
-@tolower.register(object)
+@tolower.register(object, backend="numpy")
 def _tolower(x):
     return np.char.lower(x)
 
 
-@chartr.register(object)
+@chartr.register(object, backend="numpy")
 def _chartr(old, new, x):
     old = _warn_more_pat_or_rep(old, "chartr", "old")
     new = _warn_more_pat_or_rep(new, "chartr", "new")
@@ -295,7 +301,7 @@ def _chartr(old, new, x):
     return x
 
 
-@nchar.register(object)
+@nchar.register(object, backend="numpy")
 def _nchar(
     x,
     type_: str = "bytes",
@@ -313,7 +319,7 @@ def _nchar(
     )
 
 
-@nzchar.register(object)
+@nzchar.register(object, backend="numpy")
 def _nzchar(x, keep_na: bool = False):
     x = make_array(x)
     mask = is_null(x)

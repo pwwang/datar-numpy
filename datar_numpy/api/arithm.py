@@ -32,12 +32,12 @@ from datar.apis.base import (
 from ..utils import is_null, make_array
 
 
-@ceiling.register(object)
+@ceiling.register(object, backend="numpy")
 def _ceiling(x):
     return np.ceil(x)
 
 
-@cov.register(object)
+@cov.register(object, backend="numpy")
 def _cov(x, y=None, na_rm: bool = False, ddof: int = 1):
     if y is None:
         raise ValueError(
@@ -46,44 +46,44 @@ def _cov(x, y=None, na_rm: bool = False, ddof: int = 1):
     return np.cov(x, y, ddof=ddof)[0, 1]
 
 
-@floor.register(object)
+@floor.register(object, backend="numpy")
 def _floor(x):
     return np.floor(x)
 
 
-@mean.register(object)
+@mean.register(object, backend="numpy")
 def _mean(x, na_rm: bool = False):
     return np.nanmean(x) if na_rm else np.mean(x)
 
 
-@median.register(object)
+@median.register(object, backend="numpy")
 def _median(x, na_rm: bool = False):
     return np.nanmedian(x) if na_rm else np.median(x)
 
 
-@pmax.register(object)
+@pmax.register(object, backend="numpy")
 def _pmax(x, *more, na_rm: bool = False):
     arrs = np.broadcast_arrays(x, *more)
     return np.nanmax(arrs, axis=0) if na_rm or na_rm else np.max(arrs, axis=0)
 
 
-@pmin.register(object)
+@pmin.register(object, backend="numpy")
 def _pmin(x, *more, na_rm: bool = False):
     arrs = np.broadcast_arrays(x, *more)
     return np.nanmin(arrs, axis=0) if na_rm or na_rm else np.min(arrs, axis=0)
 
 
-@sqrt.register(object)
+@sqrt.register(object, backend="numpy")
 def _sqrt(x):
     return np.sqrt(x)
 
 
-@var.register(object)
+@var.register(object, backend="numpy")
 def _var(x, na_rm: bool = False, ddof: int = 1):
     return np.nanvar(x, ddof=ddof) if na_rm else np.var(x, ddof=ddof)
 
 
-@scale.register(object)
+@scale.register(object, backend="numpy")
 def _scale(x, center=True, scale_=True):
     center_true = center is True
     x = make_array(x)
@@ -114,42 +114,42 @@ def _scale(x, center=True, scale_=True):
     return x
 
 
-@min_.register(object)
+@min_.register(object, backend="numpy")
 def _min_(x, na_rm: bool = False):
     return np.nanmin(x) if na_rm else np.min(x)
 
 
-@max_.register(object)
+@max_.register(object, backend="numpy")
 def _max_(x, na_rm: bool = False):
     return np.nanmax(x) if na_rm else np.max(x)
 
 
-@round_.register(object)
+@round_.register(object, backend="numpy")
 def _round_(x, digits: int = 0):
     return np.round(x, digits)
 
 
-@sum_.register(object)
+@sum_.register(object, backend="numpy")
 def _sum_(x, na_rm: bool = False):
     return np.nansum(x) if na_rm else np.sum(x)
 
 
-@abs_.register(object)
+@abs_.register(object, backend="numpy")
 def _abs_(x):
     return np.abs(x)
 
 
-@prod.register(object)
+@prod.register(object, backend="numpy")
 def _prod(x, na_rm: bool = False):
     return np.nanprod(x) if na_rm else np.prod(x)
 
 
-@sign.register(object)
+@sign.register(object, backend="numpy")
 def _sign(x):
     return np.sign(x)
 
 
-@signif.register(object)
+@signif.register(object, backend="numpy")
 def _signif(x, digits: int = 6):
     digits = digits - np.ceil(np.log10(np.abs(x)))
     digits = np.broadcast_arrays(0, digits.astype(int))
@@ -157,42 +157,42 @@ def _signif(x, digits: int = 6):
     return np.vectorize(np.round)(x, digits)
 
 
-@trunc.register(object)
+@trunc.register(object, backend="numpy")
 def _trunc(x):
     return np.trunc(x)
 
 
-@exp.register(object)
+@exp.register(object, backend="numpy")
 def _exp(x):
     return np.exp(x)
 
 
-@log.register(object)
+@log.register(object, backend="numpy")
 def _log(x, base: float = np.e):
     return np.log(x) / np.log(base)
 
 
-@log2.register(object)
+@log2.register(object, backend="numpy")
 def _log2(x):
     return np.log2(x)
 
 
-@log10.register(object)
+@log10.register(object, backend="numpy")
 def _log10(x):
     return np.log10(x)
 
 
-@log1p.register(object)
+@log1p.register(object, backend="numpy")
 def _log1p(x):
     return np.log1p(x)
 
 
-@sd.register(object)
+@sd.register(object, backend="numpy")
 def _sd(x, na_rm: bool = False, ddof: int = 1):
     return np.nanstd(x, ddof=ddof) if na_rm else np.std(x, ddof=ddof)
 
 
-@weighted_mean.register(object)
+@weighted_mean.register(object, backend="numpy")
 def _weighted_mean(x, w=None, na_rm: bool = False):
     if w is None:
         return np.nanmean(x) if na_rm else np.mean(x)
@@ -212,7 +212,7 @@ def _weighted_mean(x, w=None, na_rm: bool = False):
     return np.average(x, weights=w)
 
 
-@quantile.register(object)
+@quantile.register(object, backend="numpy")
 def _quantile(
     x,
     probs=(0.0, 0.25, 0.5, 0.75, 1.0),
@@ -239,7 +239,7 @@ def _quantile(
     )
 
 
-@proportions.register(object)
+@proportions.register(object, backend="numpy")
 def _proportions(x, margin=None):
     x = make_array(x)
     return x / np.sum(x)

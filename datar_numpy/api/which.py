@@ -6,16 +6,16 @@ from datar.apis.base import (
 )
 
 
-@which.register(object)
+@which.register(object, backend="numpy")
 def _which(x):
     return np.flatnonzero(x)
 
 
-@which_min.register(object)
+@which_min.register(object, backend="numpy")
 def _which_min(x):
     return np.argmin(x)
 
 
-@which_max.register(object)
+@which_max.register(object, backend="numpy")
 def _which_max(x):
     return np.argmax(x)

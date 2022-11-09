@@ -1,8 +1,8 @@
-import pytest
+import pytest  # noqa
 import numpy as np
-import datar
+from datar.core import plugin  # noqa
 from datar_numpy.utils import is_scalar, make_array
-from .utils import assert_equal, assert_iterable_equal
+from .utils import assert_iterable_equal
 
 
 def test_is_scalar():

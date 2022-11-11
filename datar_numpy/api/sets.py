@@ -4,6 +4,7 @@ from datar.apis.base import (
     any_,
     any_na,
     append,
+    outer,
     diff,
     duplicated,
     intersect,
@@ -43,6 +44,14 @@ def _append(x, values, after: int = -1):
     else:
         after += 1
     return np.insert(x, after, values)
+
+
+@outer.register(object, backend="numpy")
+def _outer(x, y, fun="*"):
+    if fun == "*":
+        return np.outer(x, y)
+
+    return np.array([fun(xi, y) for xi in x])
 
 
 @diff.register(object, backend="numpy")

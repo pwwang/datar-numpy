@@ -173,13 +173,11 @@ def _seq(
 
     if length_out is not None and from_ is None and to is None:
         return seq_len(length_out, __backend="numpy", __ast_fallback="normal")
-    print(from_)
+
     if from_ is None:
-        print(999)
         from_ = 1
     elif to is None:
         from_, to = 1, from_
-    print(from_, to)
 
     if length_out is not None:
         by = (float(to) - float(from_)) / float(length_out)

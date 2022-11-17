@@ -84,6 +84,9 @@ def _sub_(
 
 def _paste_(args, sep: str = " ") -> str:
     """Join strings with a separator"""
+    isnull = is_null(args)
+    if isnull.any():
+        return np.nan
     return sep.join(args) if len(args) > 0 else sep
 
 

@@ -21,7 +21,7 @@ from datar.apis.base import (
     is_true,
     as_character,
     as_complex,
-    as_date,
+    # as_date,
     as_double,
     as_integer,
     as_logical,
@@ -136,11 +136,6 @@ def _as_character(x: Any) -> str | np.ndarray[str]:
 @as_complex.register(object, backend="numpy")
 def _as_complex(x: Any) -> complex | np.ndarray[complex]:
     return _as_type(x, complex, np.complex_)
-
-
-@as_date.register(object, backend="numpy")
-def _as_date(x: Any) -> np.datetime64 | np.ndarray[np.datetime64]:
-    return _as_type(x, np.datetime64, np.datetime64)
 
 
 @as_double.register(object, backend="numpy")

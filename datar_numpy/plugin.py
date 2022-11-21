@@ -16,6 +16,7 @@ def base_api():
         complex,
         constants,
         cum,
+        date,
         random,
         seq,
         sets,

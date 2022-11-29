@@ -84,6 +84,8 @@ def test_strsplit():
 
 def test_paste():
     assert_equal(paste("a", "b", "c", sep="."), "a.b.c")
+    assert_equal(paste(1, 2, 3, sep="."), "1.2.3")
+    assert_equal(paste(np.nan, 1, 2, sep=".").item(), np.nan)
     assert_iterable_equal(
         paste(["a", "b"], ["c", "d"], sep="."), ["a.c", "b.d"]
     )

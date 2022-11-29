@@ -87,7 +87,7 @@ def _paste_(args, sep: str = " ") -> str:
     isnull = is_null(args)
     if isnull.any():
         return np.nan
-    return sep.join(args) if len(args) > 0 else sep
+    return sep.join((str(a) for a in args)) if len(args) > 0 else sep
 
 
 def _prepare_nchar(x, type_, keep_na):

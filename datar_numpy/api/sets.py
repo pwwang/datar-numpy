@@ -52,7 +52,9 @@ def _outer(x, y, fun="*"):
         return np.outer(x, y)
 
     kwargs = {}
-    if getattr(fun, "_pipda_functype", None) in ("pipeable", "verb"):
+    if (
+        getattr(fun, "_pipda_functype", None) in ("pipeable", "verb")
+    ):  # pragma: no cover
         kwargs["__ast_fallback"] = "normal"
     return np.array([fun(xi, y, **kwargs) for xi in make_array(x)])
 

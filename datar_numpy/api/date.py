@@ -113,7 +113,7 @@ def _as_date_int(
     if isinstance(origin, str):
         origin = _as_date_str(origin)
 
-    if origin is None:
+    if origin is None:  # pragma: no cover
         origin = datetime.date(1969, 12, 31)
 
     dt = origin + datetime.timedelta(days=int(x)) + tz

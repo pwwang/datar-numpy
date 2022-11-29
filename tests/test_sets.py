@@ -1,11 +1,12 @@
 import pytest
-import numpy as np
+# import numpy as np
 from datar.base import (
     all_,
     any_,
     any_na,
     append,
     diff,
+    outer,
     duplicated,
     intersect,
     setdiff,
@@ -101,3 +102,15 @@ def test_head():
 def test_tail():
     assert_iterable_equal(tail([1, 2, 3, 4, 5, 6, 7]), [2, 3, 4, 5, 6, 7])
     assert_iterable_equal(tail([1, 2, 3, 4, 5], 2), [4, 5])
+
+
+def test_outer():
+    out = outer([1, 2], [1, 2, 3])
+    assert len(out) == 2
+    assert_iterable_equal(out[0], [1, 2, 3])
+    assert_iterable_equal(out[1], [2, 4, 6])
+
+    out = outer([1, 2], [1, 2, 3], fun=lambda a, b: a + b)
+    assert len(out) == 2
+    assert_iterable_equal(out[0], [2, 3, 4])
+    assert_iterable_equal(out[1], [3, 4, 5])

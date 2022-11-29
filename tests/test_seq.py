@@ -135,6 +135,8 @@ def test_seq_along():
 
 def test_seq_len():
     assert_iterable_equal(seq_len(3), [1, 2, 3])
+    # warning, only first element used
+    assert_iterable_equal(seq_len([3, 4]), [1, 2, 3])
 
 
 def test_match():

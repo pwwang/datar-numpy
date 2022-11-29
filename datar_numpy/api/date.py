@@ -15,13 +15,15 @@ def _(
     tz=0,
     origin=None,
 ):
-    return as_date.dispatch(datetime.date, backend="numpy")(
+    return as_date(
         x.item(),
         format=format,
         try_formats=try_formats,
         optional=optional,
         tz=tz,
         origin=origin,
+        __ast_fallback="normal",
+        __backend="numpy",
     )
 
 

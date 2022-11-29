@@ -51,7 +51,10 @@ def _outer(x, y, fun="*"):
     if fun == "*":
         return np.outer(x, y)
 
-    return np.array([fun(xi, y) for xi in x])
+    kwargs = {}
+    if getattr(fun, "_pipda_functype", None) in ("pipeable", "verb"):
+        kwargs["__ast_fallback"] = "normal"
+    return np.array([fun(xi, y, **kwargs) for xi in make_array(x)])
 
 
 @diff.register(object, backend="numpy")

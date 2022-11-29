@@ -196,9 +196,21 @@ def _seq_along(x):
     return np.arange(x.size) + 1
 
 
-@seq_len.register(object, backend="numpy")
-def _seq_len(length_out):
-    return np.arange(int(length_out)) + 1
+@seq_len.register((list, tuple, np.ndarray), backend="numpy")
+def _seq_len_obj(length_out):
+    if len(length_out) > 1:
+        logger.warning(
+            "[datar_numpy] In seq_len(...): "
+            "first element used of 'length_out' argument"
+        )
+
+    length_out = list(length_out)[0]
+    return np.arange(length_out) + 1
+
+
+@seq_len.register((int, np.integer), backend="numpy")
+def _seq_len_int(length_out):
+    return np.arange(length_out) + 1
 
 
 @match.register(object, backend="numpy")

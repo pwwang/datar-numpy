@@ -32,7 +32,9 @@ def test_grep():
     assert_iterable_equal(grep(r"b\d", ["a", "b1", "c"], fixed=True), [])
     assert_iterable_equal(grep("b", ["a", "b1", "c"], value=True), ["b1"])
     assert_iterable_equal(grep("b", ["a", "b1", "c"], invert=True), [0, 2])
-    assert_iterable_equal(grep("b", ["a", "b1", "c"], value=True, invert=True), ["a", "c"])
+    assert_iterable_equal(
+        grep("b", ["a", "b1", "c"], value=True, invert=True), ["a", "c"]
+    )
     assert_iterable_equal(grep("B", ["a", "b1", "c"], ignore_case=True), [1])
 
 
@@ -44,10 +46,18 @@ def test_grep_pattern_warns(caplog):
 
 def test_grepl():
     assert_iterable_equal(grepl("b", ["a", "b1", "c"]), [False, True, False])
-    assert_iterable_equal(grepl(r"b\d", ["a", "b1", "c"]), [False, True, False])
-    assert_iterable_equal(grepl(r"b\d", ["a", "b1", "c"], fixed=True), [False, False, False])
-    assert_iterable_equal(grepl("b", ["a", "b1", "c"], invert=True), [True, False, True])
-    assert_iterable_equal(grepl("B", ["a", "b1", "c"], ignore_case=True), [False, True, False])
+    assert_iterable_equal(
+        grepl(r"b\d", ["a", "b1", "c"]), [False, True, False]
+    )
+    assert_iterable_equal(
+        grepl(r"b\d", ["a", "b1", "c"], fixed=True), [False, False, False]
+    )
+    assert_iterable_equal(
+        grepl("b", ["a", "b1", "c"], invert=True), [True, False, True]
+    )
+    assert_iterable_equal(
+        grepl("B", ["a", "b1", "c"], ignore_case=True), [False, True, False]
+    )
 
 
 def test_sub():
@@ -64,7 +74,9 @@ def test_gsub():
 
 def test_strsplit():
     assert_iterable_equal(strsplit("a.b.c", r"\.")[0], ["a", "b", "c"])
-    assert_iterable_equal(strsplit("a.b.c", ".", fixed=True)[0], ["a", "b", "c"])
+    assert_iterable_equal(
+        strsplit("a.b.c", ".", fixed=True)[0], ["a", "b", "c"]
+    )
     out = strsplit(["a.b.c", "d.e"], ".", fixed=True)
     assert_iterable_equal(out[0], ["a", "b", "c"])
     assert_iterable_equal(out[1], ["d", "e"])
@@ -72,8 +84,12 @@ def test_strsplit():
 
 def test_paste():
     assert_equal(paste("a", "b", "c", sep="."), "a.b.c")
-    assert_iterable_equal(paste(["a", "b"], ["c", "d"], sep="."), ["a.c", "b.d"])
-    assert_equal(paste(["a", "b"], ["c", "d"], sep=".", collapse=","), "a.c,b.d")
+    assert_iterable_equal(
+        paste(["a", "b"], ["c", "d"], sep="."), ["a.c", "b.d"]
+    )
+    assert_equal(
+        paste(["a", "b"], ["c", "d"], sep=".", collapse=","), "a.c,b.d"
+    )
 
 
 def test_paste0():
@@ -84,7 +100,9 @@ def test_paste0():
 
 def test_sprintf():
     assert_equal(sprintf("%s-%s", "a", "b"), "a-b")
-    assert_iterable_equal(sprintf("%s-%s", ["a", "b"], ["c", "d"]), ["a-c", "b-d"])
+    assert_iterable_equal(
+        sprintf("%s-%s", ["a", "b"], ["c", "d"]), ["a-c", "b-d"]
+    )
 
 
 def test_substr():
@@ -156,4 +174,6 @@ def test_nzchar():
     assert_equal(nzchar("abc"), True)
     assert_iterable_equal(nzchar(["a", ""]), [True, False])
     assert_iterable_equal(nzchar(["a", ""], keep_na=True), [True, False])
-    assert_iterable_equal(nzchar(["a", "", None], keep_na=True), [True, False, None])
+    assert_iterable_equal(
+        nzchar(["a", "", None], keep_na=True), [True, False, None]
+    )

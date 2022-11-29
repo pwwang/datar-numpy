@@ -259,11 +259,13 @@ def _substring(x, first, last=None):
 
 @startswith.register(object, backend="numpy")
 def _startswith(x, prefix):
+    x = make_array(x, dtype=str)
     return np.char.startswith(x, prefix)
 
 
 @endswith.register(object, backend="numpy")
 def _endswith(x, suffix):
+    x = make_array(x, dtype=str)
     return np.char.endswith(x, suffix)
 
 
@@ -274,6 +276,7 @@ def _strtoi(x, base=0):
 
 @trimws.register(object, backend="numpy")
 def _trimws(x, which="both", whitespace=r" \t"):
+    x = make_array(x, dtype=str)
     if which == "both":
         return np.char.strip(x, whitespace)
     if which == "left":
@@ -285,16 +288,19 @@ def _trimws(x, which="both", whitespace=r" \t"):
 
 @toupper.register(object, backend="numpy")
 def _toupper(x):
+    x = make_array(x, dtype=str)
     return np.char.upper(x)
 
 
 @tolower.register(object, backend="numpy")
 def _tolower(x):
+    x = make_array(x, dtype=str)
     return np.char.lower(x)
 
 
 @chartr.register(object, backend="numpy")
 def _chartr(old, new, x):
+    x = make_array(x, dtype=str)
     old = _warn_more_pat_or_rep(old, "chartr", "old")
     new = _warn_more_pat_or_rep(new, "chartr", "new")
 
@@ -307,7 +313,7 @@ def _chartr(old, new, x):
 @nchar.register(object, backend="numpy")
 def _nchar(
     x,
-    type_: str = "bytes",
+    type_: str = "width",
     allow_na: bool = True,
     keep_na: bool = False,
     _na_len: int = 2,

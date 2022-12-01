@@ -32,6 +32,7 @@ jobs:
           python -m pip install poetry
           poetry config virtualenvs.create false
           poetry install -v
+          pip install scipy
           # reinstall numpy to specific version
           pip install "$NUMPY"
         env:

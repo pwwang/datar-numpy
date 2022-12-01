@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import warnings
+from collections import namedtuple
+from functools import lru_cache
 from numbers import Number
 from typing import TYPE_CHECKING, Any
 
@@ -8,6 +10,14 @@ import numpy as np
 
 if TYPE_CHECKING:  # pragma: no cover
     from numpy._typing import DTypeLike
+
+Version = namedtuple("Version", ["major", "minor", "patch"])
+
+
+@lru_cache(maxsize=1)
+def numpy_version() -> Version:
+    """Get the version of numpy"""
+    return Version(*map(int, np.__version__.split(".")[:3]))
 
 
 def is_scalar(x: Any) -> bool:

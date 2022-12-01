@@ -29,7 +29,7 @@ from datar.apis.base import (
     quantile,
     proportions,
 )
-from ..utils import is_null, make_array
+from ..utils import is_null, make_array, numpy_version
 
 
 @ceiling.register(object, backend="numpy")
@@ -232,10 +232,15 @@ def _quantile(
         8: "median_unbiased",
         9: "normal_unbiased",
     }
+    if numpy_version() < (1, 22):
+        kw = {"interpolation": methods[type_]}
+    else:  # pragma: no cover
+        kw = {"method": methods[type_]}
+
     return (
-        np.nanquantile(x, probs, method=methods[type_])
+        np.nanquantile(x, probs, **kw)
         if na_rm
-        else np.quantile(x, probs, method=methods[type_])
+        else np.quantile(x, probs, **kw)
     )
 
 

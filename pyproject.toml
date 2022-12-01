@@ -9,7 +9,7 @@ packages = [{include = "datar_numpy"}]
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
-datar = "^0.10"
+datar = { version = "^0.10.0rc0", allow-prereleases = true }
 numpy = "^1.17"
 
 [tool.poetry.plugins.datar]

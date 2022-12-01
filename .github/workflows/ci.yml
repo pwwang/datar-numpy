@@ -20,7 +20,7 @@ jobs:
         ]
         exclude:
           - python-version: "3.10"
-            modin: numpy==1.17.3
+            numpy: numpy==1.17.3
 
     steps:
       - uses: actions/checkout@v2

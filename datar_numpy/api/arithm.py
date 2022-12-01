@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import numpy as np
 from datar.apis.base import (
     ceiling,
@@ -219,7 +221,7 @@ def _quantile(
     na_rm: bool = False,
     names: bool = True,  # not supported
     type_: int = 7,
-    digits: int = 7,  # not supported
+    digits: int | str = 7,  # not supported
 ):
     methods = {
         1: "inverted_cdf",
@@ -233,9 +235,9 @@ def _quantile(
         9: "normal_unbiased",
     }
     if numpy_version() < (1, 22):
-        kw = {"interpolation": methods[type_]}
+        kw = {"interpolation": methods.get(type_, type_)}
     else:  # pragma: no cover
-        kw = {"method": methods[type_]}
+        kw = {"method": methods.get(type_, type_)}
 
     return (
         np.nanquantile(x, probs, **kw)

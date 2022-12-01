@@ -30,6 +30,7 @@ from datar.base import (
     quantile,
     proportions,
 )
+from datar_numpy.utils import numpy_version
 from .utils import assert_equal, assert_iterable_equal, _isscalar
 
 
@@ -210,8 +211,9 @@ def test_quantile():
         quantile(x, [0.25, 0.75], na_rm=False, type_=7),
         [1.5, 2.5],
     )
-    assert_iterable_equal(
-        quantile(x, [0.25, 0.75], na_rm=False, type_=8),
-        [1.1666666666666667, 2.8333333333333335],
-        approx=True,
-    )
+    if not (numpy_version() < (1, 22)):
+        assert_iterable_equal(
+            quantile(x, [0.25, 0.75], na_rm=False, type_=8),
+            [1.1666666666666667, 2.8333333333333335],
+            approx=True,
+        )

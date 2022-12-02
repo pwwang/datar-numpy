@@ -145,9 +145,6 @@ def _as_double(x: Any) -> float | np.ndarray[float]:
 
 @as_integer.register(object, backend="numpy")
 def _as_integer(x: Any) -> int | np.ndarray[int]:
-    x = make_array(x)
-    if np.issubdtype(x.dtype, np.float_):
-        return np.floor(x).astype(int)
     return _as_type(x, int, np.int_)
 
 

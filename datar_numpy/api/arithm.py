@@ -234,7 +234,7 @@ def _quantile(
         8: "median_unbiased",
         9: "normal_unbiased",
     }
-    if numpy_version() < (1, 22):
+    if numpy_version() < (1, 22):  # pragma: no cover
         kw = {"interpolation": methods.get(type_, type_)}
     else:  # pragma: no cover
         kw = {"method": methods.get(type_, type_)}

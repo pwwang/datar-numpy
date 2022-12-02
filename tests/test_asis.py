@@ -196,7 +196,7 @@ def test_is(fn, x, expected):
         (as_double, 1.0, 1.0),
         (as_double, "1", 1.0),
         (as_integer, 1, 1),
-        (as_integer, 1.0, 1),
+        (as_integer, 1.1, 1),
         (as_integer, "1", 1),
         (as_integer, np.array("1"), 1),
         (as_integer, [np.array("1")], [1]),

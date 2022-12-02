@@ -36,7 +36,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "datar"
-version = "0.10.0rc0"
+version = "0.10.0"
 description = "A Grammar of Data Manipulation in python"
 category = "main"
 optional = false
@@ -279,7 +279,7 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.1"
-content-hash = "bda3105c8ea44c3f2da0c4bf934e91d71cb725779536ac0a34306d48af894c79"
+content-hash = "6f8a8524d5d11031e8a22834d21378210b5d8fedff9ae5a929c6db5b4cef37d7"
 
 [metadata.files]
 attrs = [
@@ -343,7 +343,8 @@ coverage = [
     {file = "coverage-6.5.0.tar.gz", hash = "sha256:f642e90754ee3e06b0e7e51bce3379590e76b7f76b708e1a71ff043f87025c84"},
 ]
 datar = [
-    {file = "datar-0.10.0rc0.tar.gz", hash = "sha256:ace7c766565b1f92b5521cd4099350b5aa0c06241783d6ed75f99b796378c58f"},
+    {file = "datar-0.10.0-py3-none-any.whl", hash = "sha256:fea00bb75237eb3464f1e32c8620f13e8ecac487d43b80914a3d7352816a3dc1"},
+    {file = "datar-0.10.0.tar.gz", hash = "sha256:36a84f4712d02f75758573f5eef06a6a780812886d6b086ce9fad52d3e49d745"},
 ]
 diot = [
     {file = "diot-0.1.6-py3-none-any.whl", hash = "sha256:1e7f97bbc92cbbdd51d8c535885f5e2a71762b364c1b2410dfc84f3a4572d551"},

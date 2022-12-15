@@ -1,6 +1,8 @@
 import numpy as np
 from datar.core.plugin import plugin
 
+# For simplug to retrieve the version
+from .version import __version__  # noqa: F401
 from .utils import flatten_slice, make_array
 
 priority = -1
@@ -40,7 +42,6 @@ def base_api():
 @plugin.impl
 def get_versions():
     import numpy
-    from .version import __version__
 
     return {
         "datar-numpy": __version__,

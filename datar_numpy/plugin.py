@@ -1,8 +1,7 @@
 import numpy as np
-from simplug import Simplug
-from .utils import flatten_slice, make_array
+from datar.core.plugin import plugin
 
-plugin = Simplug("datar")
+from .utils import flatten_slice, make_array
 
 priority = -1
 

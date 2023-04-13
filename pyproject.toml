@@ -8,9 +8,9 @@ readme = "README.md"
 packages = [{include = "datar_numpy"}]
 
 [tool.poetry.dependencies]
-python = "^3.7.1"
-datar = "^0.11"
-numpy = "^1.17"
+python = "^3.8"
+datar = "^0.12"
+numpy = "^1.20"
 
 [tool.poetry.plugins.datar]
 numpy = "datar_numpy:plugin"

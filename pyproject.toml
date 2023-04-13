@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "datar-numpy"
-version = "0.1.0"
+version = "0.2.0"
 description = "The numpy backend for datar"
 authors = ["pwwang <pwwang@pwwang.com>"]
 license = "MIT"

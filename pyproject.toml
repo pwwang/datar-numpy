@@ -7,6 +7,9 @@ license = "MIT"
 readme = "README.md"
 packages = [{include = "datar_numpy"}]
 
+[tool.poetry.build]
+generate-setup-file = true
+
 [tool.poetry.dependencies]
 python = "^3.8"
 datar = "^0.12"

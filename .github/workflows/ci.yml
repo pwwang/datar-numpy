@@ -37,7 +37,7 @@ jobs:
           poetry install -v
           pip install -U scipy wcwidth
           # reinstall numpy to specific version
-          pip install "$NUMPY"
+          pip install -U "$NUMPY"
         env:
           NUMPY: ${{ matrix.numpy }}
       - name: Run flake8

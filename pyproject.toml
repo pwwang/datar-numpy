@@ -12,7 +12,7 @@ generate-setup-file = true
 
 [tool.poetry.dependencies]
 python = "^3.8"
-datar = "^0.12"
+datar = "^0.13"
 numpy = "^1.20"
 
 [tool.poetry.plugins.datar]

@@ -12,8 +12,14 @@ generate-setup-file = true
 
 [tool.poetry.dependencies]
 python = "^3.8"
-datar = "^0.13"
+datar = "^0.14"
+# datar = { path = "../datar" }
 numpy = "^1.20"
+scipy = { version = "^1.6", optional = true }
+wcwidth = { version = "^0.2", optional = true }
+
+[tool.poetry.extras]
+all = ["scipy", "wcwidth"]
 
 [tool.poetry.plugins.datar]
 numpy = "datar_numpy:plugin"

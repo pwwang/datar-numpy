@@ -80,13 +80,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "datar"
-version = "0.14.0"
+version = "0.15.0"
 description = "A Grammar of Data Manipulation in python"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "datar-0.14.0-py3-none-any.whl", hash = "sha256:3a2d145644f259d71f85540717f24b0771dd88a6d079994e94b6b316663163f1"},
-    {file = "datar-0.14.0.tar.gz", hash = "sha256:9d010ff68d8954f4764c3759b8e1b2392ff96d1368083a66f7ba7a700aa65089"},
+    {file = "datar-0.15.0-py3-none-any.whl", hash = "sha256:34ec1c56bcc767570c12730ad3732151958ac7ee90cffa5c87e45ce6d75ff98e"},
+    {file = "datar-0.15.0.tar.gz", hash = "sha256:c08d74218f670e14d357079e62904be84cd96ac8ed64f9b22c29ebfac44017a8"},
 ]
 
 [package.dependencies]
@@ -97,7 +97,7 @@ simplug = ">=0.3,<0.4"
 [package.extras]
 arrow = ["datar-arrow (>=0.1,<0.2)"]
 numpy = ["datar-numpy (>=0.3,<0.4)"]
-pandas = ["datar-pandas (>=0.4,<0.5)"]
+pandas = ["datar-pandas (>=0.5,<0.6)"]
 
 [[package]]
 name = "diot"
@@ -428,4 +428,4 @@ all = ["scipy", "wcwidth"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "1c5a633c2c50258890b6b6ece1a5aaa51a69cb4b33f8b622febd2cf3dd8571f6"
+content-hash = "61853cf59ab1cfa50c530888c4d5236daa8250a8789e744311eb57f38c232b98"

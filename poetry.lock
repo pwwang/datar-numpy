@@ -428,4 +428,4 @@ all = ["scipy", "wcwidth"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "61853cf59ab1cfa50c530888c4d5236daa8250a8789e744311eb57f38c232b98"
+content-hash = "6bf6e60f8ff5a75e9a8d4d5e886d066a7d47ca631e0c6d285584fc660cbdd565"

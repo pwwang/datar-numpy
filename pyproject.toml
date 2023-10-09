@@ -33,9 +33,9 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "-vv -p no:asyncio --tb=short --cov=datar_numpy --cov-report xml:cov.xml --cov-report term-missing"
+addopts = "-vv --assert=plain -p no:asyncio --tb=short --cov=datar_numpy --cov-report xml:cov.xml --cov-report term-missing"
 filterwarnings = [
-    # "error"
+    "error"
 ]
 console_output_style = "progress"
 junit_family = "xunit1"

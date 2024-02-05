@@ -153,6 +153,8 @@ def _sign(x):
 
 @signif.register(object, backend="numpy")
 def _signif(x, digits: int = 6):
+    if x == 0:
+        return x
     digits = digits - np.ceil(np.log10(np.abs(x)))
     digits = np.broadcast_arrays(0, digits.astype(int))
     digits = np.nanmax(digits, axis=0)

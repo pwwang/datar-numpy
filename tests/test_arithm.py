@@ -158,6 +158,14 @@ def test_signif():
     assert_iterable_equal(signif(x, -1), [1.0, 6.0, 9.0])
 
 
+def test_signif_0():
+    """pwwang/datar#201"""
+    import warnings
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        signif(0)
+
+
 def test_log():
     x = [1, 2, 3]
     assert_iterable_equal(

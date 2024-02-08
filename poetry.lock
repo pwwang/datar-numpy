@@ -80,13 +80,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "datar"
-version = "0.15.4"
+version = "0.15.5"
 description = "A Grammar of Data Manipulation in python"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "datar-0.15.4-py3-none-any.whl", hash = "sha256:311e3cb9066c350304df9fa5919ca7053379e10f8a8f4f757ab396ef5aada250"},
-    {file = "datar-0.15.4.tar.gz", hash = "sha256:235758b241e0f962c4cdd6b87f5cce8f24fb51babd189839298187df78e45e7d"},
+    {file = "datar-0.15.5-py3-none-any.whl", hash = "sha256:e024a87837bdd1514b96556f639b7f9c0f9664383d773337eb363ee05d9068b5"},
+    {file = "datar-0.15.5.tar.gz", hash = "sha256:e7dc71aff4714cae074a7571d5230254922a59faf1bd27b9be2922b57ebd1f71"},
 ]
 
 [package.dependencies]
@@ -96,7 +96,7 @@ simplug = ">=0.3,<0.4"
 
 [package.extras]
 arrow = ["datar-arrow (>=0.1,<0.2)"]
-numpy = ["datar-numpy (>=0.3.2,<0.4.0)"]
+numpy = ["datar-numpy (>=0.3.3,<0.4.0)"]
 pandas = ["datar-pandas (>=0.5.4,<0.6.0)"]
 
 [[package]]

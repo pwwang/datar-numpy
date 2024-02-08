@@ -31,7 +31,7 @@ from datar.apis.base import (
     quantile,
     proportions,
 )
-from ..utils import is_null, make_array, numpy_version
+from ..utils import is_null, is_scalar, make_array, numpy_version
 
 
 @ceiling.register(object, backend="numpy")
@@ -153,7 +153,7 @@ def _sign(x):
 
 @signif.register(object, backend="numpy")
 def _signif(x, digits: int = 6):
-    if x == 0:
+    if is_scalar(x) and x == 0:
         return x
     digits = digits - np.ceil(np.log10(np.abs(x)))
     digits = np.broadcast_arrays(0, digits.astype(int))

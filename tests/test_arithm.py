@@ -164,6 +164,9 @@ def test_signif_0():
     with warnings.catch_warnings():
         warnings.simplefilter("error")
         signif(0)
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        signif(np.array(0))
 
 
 def test_log():

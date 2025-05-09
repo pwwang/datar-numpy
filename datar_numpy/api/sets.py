@@ -99,7 +99,7 @@ def _intersect(x, y):
 @setdiff.register(object, backend="numpy")
 def _setdiff(x, y):
     x = make_array(x)
-    out = x[~np.in1d(x, y)]
+    out = x[~np.isin(x, y)]
     return unique(out, __backend="numpy", __ast_fallback="normal")
 
 

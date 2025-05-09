@@ -70,12 +70,12 @@ def _is_character(x: Any) -> bool:
 
 @is_complex.register(object, backend="numpy")
 def _is_complex(x: Any) -> bool:
-    return _is_type(x, complex, np.complex_)
+    return _is_type(x, complex, np.complex128)
 
 
 @is_double.register(object, backend="numpy")
 def _is_double(x: Any) -> bool:
-    return _is_type(x, float, np.float_)
+    return _is_type(x, float, np.float64)
 
 
 @is_integer.register(object, backend="numpy")
@@ -135,12 +135,12 @@ def _as_character(x: Any) -> str | np.ndarray[str]:
 
 @as_complex.register(object, backend="numpy")
 def _as_complex(x: Any) -> complex | np.ndarray[complex]:
-    return _as_type(x, complex, np.complex_)
+    return _as_type(x, complex, np.complex128)
 
 
 @as_double.register(object, backend="numpy")
 def _as_double(x: Any) -> float | np.ndarray[float]:
-    return _as_type(x, float, np.float_)
+    return _as_type(x, float, np.float64)
 
 
 @as_integer.register(object, backend="numpy")
@@ -166,12 +166,12 @@ def _as_numeric(x: Any) -> Number | np.ndarray[Number]:
         pass
 
     try:
-        return _as_type(x, float, np.float_)
+        return _as_type(x, float, np.float64)
     except (TypeError, ValueError):
         pass
 
     try:
-        return _as_type(x, complex, np.complex_)
+        return _as_type(x, complex, np.complex128)
     except (TypeError, ValueError):
         pass
 

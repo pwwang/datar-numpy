@@ -11,8 +11,8 @@ packages = [{include = "datar_numpy"}]
 generate-setup-file = true
 
 [tool.poetry.dependencies]
-python = "^3.8"
-datar = "^0.15"
+python = "^3.9"
+datar = "^0.15.9"
 # datar = { path = "../datar" }
 numpy = "^1.20"
 scipy = { version = "^1.8", optional = true }
@@ -24,7 +24,7 @@ all = ["scipy", "wcwidth"]
 [tool.poetry.plugins.datar]
 numpy = "datar_numpy:plugin"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^7"
 pytest-cov = "^4"
 

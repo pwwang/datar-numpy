@@ -1,5 +1,5 @@
-import pytest
-import numpy as np
+import pytest  # noqa: F401
+import numpy as np  # noqa: F401
 from datar.base import which, which_max, which_min
 from .utils import assert_iterable_equal, assert_equal
 

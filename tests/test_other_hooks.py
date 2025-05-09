@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa: F401
 from datar import get_versions
 from datar.base import c
 from .utils import assert_equal, assert_iterable_equal

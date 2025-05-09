@@ -1,4 +1,4 @@
-import pytest
+import pytest  # noqa: F401
 import numpy as np
 from datar.base import (
     acos,
@@ -18,7 +18,7 @@ from datar.base import (
     tanpi,
     atan2,
 )
-from .utils import assert_equal, assert_iterable_equal
+from .utils import assert_equal
 
 
 def test_acos():

@@ -40,7 +40,7 @@ def is_scalar(x: Any) -> bool:
         #   <attribute 'ndim' of 'numpy.generic' objects>
         return True
 
-    if hasattr(np, "VisibleDeprecationWarning"):  # numpy < v2  # pragma: no cover
+    if hasattr(np, "VisibleDeprecationWarning"):  # pragma: no cover
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", np.VisibleDeprecationWarning)
             return np.ndim(x) == 0
@@ -77,7 +77,7 @@ def make_array(x: Any, dtype: DTypeLike = None) -> np.ndarray:
     if isinstance(x, np.ndarray):
         return x if dtype is None else x.astype(dtype)
 
-    if hasattr(np, "VisibleDeprecationWarning"):  # numpy < v2  # pragma: no cover
+    if hasattr(np, "VisibleDeprecationWarning"):  # pragma: no cover
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", np.VisibleDeprecationWarning)
             out = np.array(x, dtype=dtype)

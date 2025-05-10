@@ -14,7 +14,7 @@ generate-setup-file = true
 python = "^3.9"
 datar = "^0.15.9"
 # datar = { path = "../datar" }
-numpy = "^1.22"
+numpy = "^2"
 scipy = { version = "^1.8", optional = true }
 wcwidth = { version = "^0.2", optional = true }
 

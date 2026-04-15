@@ -82,10 +82,10 @@ def _sub_(
     return pattern.sub(repl=replacement, count=count, string=x)
 
 
-def _paste_(args, sep: str = " ") -> str:
+def _paste_(args, sep: str = " ") -> object:
     """Join strings with a separator"""
     isnull = is_null(args)
-    if isnull.any():
+    if np.any(isnull):
         return np.nan
     return sep.join((str(a) for a in args)) if len(args) > 0 else sep
 
@@ -231,8 +231,8 @@ def _paste0(*args, collapse=None):
         *args,
         sep="",
         collapse=collapse,
-        __backend="numpy",
-        __ast_fallback="normal",
+        __backend="numpy",  # type: ignore
+        __ast_fallback="normal",  # type: ignore
     )
 
 
@@ -252,6 +252,11 @@ def _substr(x, start, stop):
 
 @substring.register(object, backend="numpy")
 def _substring(x, first, last=None):
+    if last is None:
+        return np.vectorize(lambda x, first: x[first:])(
+            *np.broadcast_arrays(x, first)
+        )
+
     return np.vectorize(lambda x, first, last: x[first:last])(
         *np.broadcast_arrays(x, first, last)
     )
@@ -339,7 +344,7 @@ def _nzchar(x, keep_na: bool = False):
     if not keep_na:
         return out
 
-    if not mask.any():
+    if not np.any(mask):
         return out
 
     out = out.astype(object)

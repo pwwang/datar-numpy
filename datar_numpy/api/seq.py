@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+from numpy.typing import NDArray
 
 from datar.core.utils import logger
 from datar.apis.base import (
@@ -57,28 +58,25 @@ def _rep(
                 "Unexpected each argument when times is an iterable."
             )
 
-    if is_scalar(times) and _is_type(times, int, np.int_):
-        x = np.tile(np.repeat(x, each), times)
+    if is_scalar(times) and isinstance(times, (int, np.integer)):
+        times_int = int(times)
+        x = np.tile(np.repeat(x, each), times_int)
     else:
         x = np.repeat(x, times)
 
     if length is None:
         return x
 
-    repeats = length // x.size + 1
+    length_int = int(length)
+    repeats = length_int // x.size + 1
     x = np.tile(x, repeats)
 
-    return x[:length]
+    return x[:length_int]
 
 
 @c_.register(object, backend="numpy")
 def _c(*args):
-    return np.concatenate(
-        [
-            make_array(xi).flatten()
-            for xi in args
-        ]
-    )
+    return np.concatenate([make_array(xi).flatten() for xi in args])
 
 
 @length.register(object, backend="numpy")
@@ -87,7 +85,7 @@ def _length(x):
 
 
 @lengths.register(object, backend="numpy")
-def _lengths(x) -> np.ndarray[int]:
+def _lengths(x) -> NDArray[np.int_]:
     return (
         np.array([1], dtype=int)
         if is_scalar(x)
@@ -115,8 +113,8 @@ def _sort(x, decreasing: bool = False, na_last: bool = True):
         x,
         decreasing=decreasing,
         na_last=na_last,
-        __ast_fallback="normal",
-        __backend="numpy",
+        __ast_fallback="normal",  # type: ignore
+        __backend="numpy",  # type: ignore
     )
 
     return x[idx]
@@ -131,8 +129,7 @@ def _rank(x, na_last: bool = True, ties_method: str = "average"):
         from scipy import stats
     except ImportError as imperr:  # pragma: no cover
         raise ImportError(
-            "`rank` requires `scipy` package.\n"
-            "Try: pip install -U scipy"
+            "`rank` requires `scipy` package.\n" "Try: pip install -U scipy"
         ) from imperr
 
     return stats.rankdata(x, method=ties_method)
@@ -147,9 +144,9 @@ def _rev(x):
 @sample.register(object, backend="numpy")
 def _sample(
     x,
-    size: int = None,
+    size: int | None = None,
     replace: bool = False,
-    prob: float | np.ndarray[float] = None,
+    prob: float | NDArray[np.float64] | None = None,
 ):
     x = make_array(x)
     size = x.size if size is None else int(size)
@@ -166,18 +163,33 @@ def _seq(
     along_with=None,
 ):
     if along_with is not None:
-        return seq_along(along_with, __backend="numpy", __ast_fallback="normal")
+        return seq_along(
+            along_with,
+            __backend="numpy",  # type: ignore
+            __ast_fallback="normal",  # type: ignore
+        )
 
     if not is_scalar(from_):
-        return seq_along(from_, __backend="numpy", __ast_fallback="normal")
+        return seq_along(
+            from_,
+            __backend="numpy",  # type: ignore
+            __ast_fallback="normal",  # type: ignore
+        )
 
     if length_out is not None and from_ is None and to is None:
-        return seq_len(length_out, __backend="numpy", __ast_fallback="normal")
+        return seq_len(
+            length_out,
+            __backend="numpy",  # type: ignore
+            __ast_fallback="normal",  # type: ignore
+        )
 
     if from_ is None:
         from_ = 1
-    elif to is None:
+    if to is None:
         from_, to = 1, from_
+
+    assert from_ is not None
+    assert to is not None
 
     if length_out is not None:
         by = (float(to) - float(from_)) / float(length_out)

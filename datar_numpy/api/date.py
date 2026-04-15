@@ -22,8 +22,8 @@ def _(
         optional=optional,
         tz=tz,
         origin=origin,
-        __ast_fallback="normal",
-        __backend="numpy",
+        __ast_fallback="normal",  # type: ignore
+        __backend="numpy",  # type: ignore
     )
 
 
@@ -142,8 +142,8 @@ def _as_date_iter(
                 optional=optional,
                 origin=origin,
                 tz=tz,
-                __ast_fallback="normal",
-                __backend="numpy",
+                __ast_fallback="normal",  # type: ignore
+                __backend="numpy",  # type: ignore
             )
             for el in x
         ],

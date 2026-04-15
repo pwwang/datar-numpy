@@ -4,6 +4,7 @@ from numbers import Number
 from typing import Any
 
 import numpy as np
+from numpy.typing import NDArray
 from datar.apis.base import (
     is_atomic,
     is_character,
@@ -84,7 +85,7 @@ def _is_integer(x: Any) -> bool:
 
 
 @is_element.register(object, backend="numpy")
-def _is_element(x: Any, y: Any) -> bool:
+def _is_element(x: Any, y: Any) -> NDArray[np.bool_]:
     return np.isin(x, y)
 
 
@@ -109,13 +110,13 @@ def _is_logical(x: Any) -> bool:
 
 
 @is_na.register(object, backend="numpy")
-def _is_na(x: Any) -> bool | np.ndarray[bool]:
+def _is_na(x: Any) -> bool | NDArray[np.bool_]:
     return _is_null_(x)
 
 
 @is_null.register(object, backend="numpy")
 def _is_null(x: Any) -> bool:
-    return x is NULL or np.array_equal(x, NULL)
+    return x is NULL or np.array_equal(x, np.array(NULL, dtype=object))
 
 
 @is_numeric.register(object, backend="numpy")
@@ -129,27 +130,27 @@ def _is_true(x: Any) -> bool:
 
 
 @as_character.register(object, backend="numpy")
-def _as_character(x: Any) -> str | np.ndarray[str]:
+def _as_character(x: Any) -> str | NDArray[np.str_]:
     return _as_type(x, str, np.str_)
 
 
 @as_complex.register(object, backend="numpy")
-def _as_complex(x: Any) -> complex | np.ndarray[complex]:
+def _as_complex(x: Any) -> complex | NDArray[np.complex128]:
     return _as_type(x, complex, np.complex128)
 
 
 @as_double.register(object, backend="numpy")
-def _as_double(x: Any) -> float | np.ndarray[float]:
+def _as_double(x: Any) -> float | NDArray[np.float64]:
     return _as_type(x, float, np.float64)
 
 
 @as_integer.register(object, backend="numpy")
-def _as_integer(x: Any) -> int | np.ndarray[int]:
+def _as_integer(x: Any) -> int | NDArray[np.int_]:
     return _as_type(x, int, np.int_)
 
 
 @as_logical.register(object, backend="numpy")
-def _as_logical(x: Any) -> bool | np.ndarray[bool]:
+def _as_logical(x: Any) -> bool | NDArray[np.bool_]:
     return _as_type(x, bool, np.bool_)
 
 
@@ -159,7 +160,9 @@ def _as_null(x: Any) -> None:
 
 
 @as_numeric.register(object, backend="numpy")
-def _as_numeric(x: Any) -> Number | np.ndarray[Number]:
+def _as_numeric(
+    x: Any,
+) -> int | float | complex | NDArray[np.number[Any]]:
     try:
         return _as_type(x, int, np.int_)
     except (TypeError, ValueError):

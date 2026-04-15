@@ -7,6 +7,8 @@ from numbers import Number
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
+import numpy.typing as npt
+from numpy.exceptions import VisibleDeprecationWarning
 
 if TYPE_CHECKING:  # pragma: no cover
     from numpy._typing import DTypeLike
@@ -40,15 +42,12 @@ def is_scalar(x: Any) -> bool:
         #   <attribute 'ndim' of 'numpy.generic' objects>
         return True
 
-    if hasattr(np, "VisibleDeprecationWarning"):  # pragma: no cover
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", np.VisibleDeprecationWarning)
-            return np.ndim(x) == 0
-
-    return np.ndim(x) == 0
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", VisibleDeprecationWarning)
+        return np.ndim(x) == 0  # type: ignore[arg-type]
 
 
-def is_null(x: Any) -> bool | np.ndarray[bool]:
+def is_null(x: Any) -> bool | npt.NDArray[np.bool_]:
     """Is x None or NA? Like pandas.isnull()
 
     Args:
@@ -64,7 +63,7 @@ def is_null(x: Any) -> bool | np.ndarray[bool]:
     except TypeError:
 
         isnull_atomic = (
-            lambda x: x is None or (isinstance(x, Number) and np.isnan(x))
+            lambda x: x is None or (isinstance(x, Number) and x != x)
         )
         return np.vectorize(isnull_atomic, [bool])(x)
 
@@ -77,11 +76,8 @@ def make_array(x: Any, dtype: DTypeLike = None) -> np.ndarray:
     if isinstance(x, np.ndarray):
         return x if dtype is None else x.astype(dtype)
 
-    if hasattr(np, "VisibleDeprecationWarning"):  # pragma: no cover
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", np.VisibleDeprecationWarning)
-            out = np.array(x, dtype=dtype)
-    else:  # numpy v2
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", VisibleDeprecationWarning)
         out = np.array(x, dtype=dtype)
 
     if dtype is not None:
@@ -91,12 +87,16 @@ def make_array(x: Any, dtype: DTypeLike = None) -> np.ndarray:
     # np.array(["a", np.nan]) turns into ["a", "nan"]
     # but we want ["a", np.nan]
     na_mask = is_null(x)
-    if na_mask.any() and out.dtype.kind == "U":
+    if (
+        isinstance(na_mask, np.ndarray)
+        and na_mask.any()
+        and out.dtype.kind == "U"
+    ):
         out = np.array(x, dtype=object)
     return out
 
 
-def flatten_slice(x: slice) -> np.ndarray[int]:
+def flatten_slice(x: slice) -> npt.NDArray[np.int_]:
     """Flatten a slice into an array of integers"""
     start = x.start or 0
     stop = x.stop or 0

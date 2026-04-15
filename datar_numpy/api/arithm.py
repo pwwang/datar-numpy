@@ -156,7 +156,7 @@ def _signif(x, digits: int = 6):
     if is_scalar(x) and x == 0:
         return x
     digits = digits - np.ceil(np.log10(np.abs(x)))
-    digits = np.broadcast_arrays(0, digits.astype(int))
+    digits = np.broadcast_arrays(0, digits.astype(int))  # type: ignore
     digits = np.nanmax(digits, axis=0)
     return np.vectorize(np.round)(x, digits)
 
@@ -242,9 +242,9 @@ def _quantile(
         kw = {"method": methods.get(type_, type_)}
 
     return (
-        np.nanquantile(x, probs, **kw)
+        np.nanquantile(x, probs, **kw)  # type: ignore
         if na_rm
-        else np.quantile(x, probs, **kw)
+        else np.quantile(x, probs, **kw)  # type: ignore
     )
 
 

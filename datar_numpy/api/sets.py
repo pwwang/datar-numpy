@@ -16,7 +16,7 @@ from datar.apis.base import (
     tail,
 )
 
-from ..utils import make_array, is_null, is_scalar
+from ..utils import make_array, is_null
 
 
 @all_.register(object, backend="numpy")
@@ -31,7 +31,7 @@ def _any_(x):
 
 @any_na.register(object, backend="numpy")
 def _any_na(x):
-    return is_null(x) if is_scalar(x) else is_null(x).any()
+    return bool(np.any(is_null(x)))
 
 
 @append.register(object, backend="numpy")
@@ -50,6 +50,11 @@ def _append(x, values, after: int = -1):
 def _outer(x, y, fun="*"):
     if fun == "*":
         return np.outer(x, y)
+
+    if isinstance(fun, str):  # pragma: no cover
+        raise ValueError("fun must be callable when it is not '*'")
+    if not callable(fun):  # pragma: no cover
+        raise TypeError("fun must be callable or '*'")
 
     kwargs = {}
     if (
@@ -100,7 +105,11 @@ def _intersect(x, y):
 def _setdiff(x, y):
     x = make_array(x)
     out = x[~np.isin(x, y)]
-    return unique(out, __backend="numpy", __ast_fallback="normal")
+    return unique(
+        out,
+        __backend="numpy",  # type: ignore
+        __ast_fallback="normal",  # type: ignore
+    )
 
 
 @setequal.register(object, backend="numpy")

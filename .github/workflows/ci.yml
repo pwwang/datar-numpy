@@ -35,6 +35,8 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --extra all
+      - name: Set numpy label
+        run: echo "NUMPY_LABEL=$(echo '${{ matrix.numpy }}' | sed 's/</_lt_/g')" >> $GITHUB_ENV
       - name: Override numpy version
         run: uv pip install "$NUMPY"
         env:
@@ -44,12 +46,12 @@ jobs:
       - name: Show versions
         run: uv run python -c 'import datar; datar.get_versions()'
       - name: Test with pytest
-        run: uv run pytest tests/ --junitxml=junit/test-results-${{ matrix.python-version }}-${{ matrix.numpy }}.xml
+        run: uv run pytest tests/ --junitxml=junit/test-results-${{ matrix.python-version }}-${{ env.NUMPY_LABEL }}.xml
       - name: Upload pytest test results
         uses: actions/upload-artifact@v7
         with:
-          name: pytest-results-${{ matrix.python-version }}-${{ matrix.numpy }}
-          path: junit/test-results-${{ matrix.python-version }}-${{ matrix.numpy }}.xml
+          name: pytest-results-${{ matrix.python-version }}-${{ env.NUMPY_LABEL }}
+          path: junit/test-results-${{ matrix.python-version }}-${{ env.NUMPY_LABEL }}.xml
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
       - name: Run codacy-coverage-reporter

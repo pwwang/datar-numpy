@@ -68,7 +68,7 @@ def is_null(x: Any) -> bool | npt.NDArray[np.bool_]:
         return np.vectorize(isnull_atomic, [bool])(x)
 
 
-def make_array(x: Any, dtype: DTypeLike = None) -> np.ndarray:
+def make_array(x: Any, dtype: DTypeLike | None = None) -> np.ndarray:
     """Make an array from x"""
     if is_scalar(x):
         return np.array(x, dtype=dtype).ravel()

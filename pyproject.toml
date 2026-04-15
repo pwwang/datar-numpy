@@ -1,6 +1,6 @@
 [project]
 name = "datar-numpy"
-version = "0.3.6"
+version = "0.3.7"
 description = "The numpy backend for datar"
 authors = [{name = "pwwang", email = "pwwang@pwwang.com"}]
 license = {text = "MIT"}

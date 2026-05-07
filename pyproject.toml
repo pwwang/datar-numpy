@@ -7,7 +7,7 @@ license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
-    "datar",
+    "datar>0.15",
     # "datar @ ../datar",
     "numpy>=2,<3",
 ]

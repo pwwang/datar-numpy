@@ -273,7 +273,6 @@ wheels = [
 
 [[package]]
 name = "datar-numpy"
-version = "0.3.7"
 source = { editable = "." }
 dependencies = [
     { name = "datar" },
@@ -314,7 +313,7 @@ requires-dist = [
     { name = "wcwidth", marker = "extra == 'all'", specifier = ">=0.2,<1" },
     { name = "wcwidth", marker = "extra == 'wcwidth'", specifier = ">=0.2,<1" },
 ]
-provides-extras = ["scipy", "wcwidth", "all"]
+provides-extras = ["all", "scipy", "wcwidth"]
 
 [package.metadata.requires-dev]
 dev = [

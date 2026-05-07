@@ -1,6 +1,6 @@
 [project]
 name = "datar-numpy"
-version = "0.3.7"
+dynamic = ["version"]
 description = "The numpy backend for datar"
 authors = [{name = "pwwang", email = "pwwang@pwwang.com"}]
 license = {text = "MIT"}
@@ -11,6 +11,9 @@ dependencies = [
     # "datar @ ../datar",
     "numpy>=2,<3",
 ]
+
+[tool.hatch.version]
+path = "datar_numpy/version.py"
 
 [project.optional-dependencies]
 scipy = ["scipy>=1.8,<2"]
